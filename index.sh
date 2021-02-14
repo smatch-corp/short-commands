@@ -1,1 +1,6 @@
-[ -s "$SHORT_COMMANDS_DIR/_git.sh" ] && \. "$SHORT_COMMANDS_DIR/_git.sh"
+GIT='_git.sh'
+KUBECTL='_kubectl.sh'
+
+# Imports
+[ -s "$SHORT_COMMANDS_DIR/$GIT" ] && \. "$SHORT_COMMANDS_DIR/$GIT"
+[ -s "$SHORT_COMMANDS_DIR/$KUBECTL" ] && \. "$SHORT_COMMANDS_DIR/$KUBECTL"

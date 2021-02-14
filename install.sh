@@ -1,4 +1,5 @@
 # bash -c "$(curl -fsSL https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh)"
+VERSION='0.1.0'
 
 NO_COLOR='\033[0m'
 CYAN='\033[1;36m'
@@ -8,10 +9,15 @@ echo -e "${CYAN} / __| |_  ___ _ _| |_  ${YELLOW} / __|___ _ __  _ __  __ _ _ _ 
 echo -e "${CYAN} \__ \ ' \/ _ \ '_|  _| ${YELLOW}| (__/ _ \ '  \| '  \/ _\` | ' \/ _\` (_-<";
 echo -e "${CYAN} |___/_||_\___/_|  \__| ${YELLOW} \___\___/_|_|_|_|_|_\__,_|_||_\__,_/__/";
 echo -e "${CYAN}                        ${YELLOW}                                        ";
-echo -e "${CYAN}                version ${YELLOW}0.0.0                                   ";
+echo -e "${CYAN}                version ${YELLOW}${VERSION}                                   ";
 echo -e "${CYAN}                        ${YELLOW}                                        ";
-echo -e "${NO_COLOR}Append script to bashrc..."
 
+
+echo -e "${NO_COLOR}Install kubectl..."
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+
+echo -e "${NO_COLOR}Append script to bashrc..."
 printf "
 # Short commands for developer
 # 
