@@ -1,6 +1,10 @@
 GIT='_git.sh'
 KUBECTL='_kubectl.sh'
+CONFIGS='configs.sh'
+PG='_pg.sh'
 
 # Imports
 [ -s "$SHORT_COMMANDS_DIR/$GIT" ] && \. "$SHORT_COMMANDS_DIR/$GIT"
 [ -s "$SHORT_COMMANDS_DIR/$KUBECTL" ] && \. "$SHORT_COMMANDS_DIR/$KUBECTL"
+[ -s "$SHORT_COMMANDS_DIR/$CONFIGS" ] && \. "$SHORT_COMMANDS_DIR/$CONFIGS"
+[ -s "$SHORT_COMMANDS_DIR/$PG" ] && \. "$SHORT_COMMANDS_DIR/$PG"

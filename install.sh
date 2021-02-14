@@ -1,5 +1,5 @@
 # bash -c "$(curl -fsSL https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh)"
-VERSION='0.1.0'
+VERSION='0.2.0'
 
 NO_COLOR='\033[0m'
 CYAN='\033[1;36m'
@@ -12,6 +12,21 @@ echo -e "${CYAN}                        ${YELLOW}                               
 echo -e "${CYAN}                version ${YELLOW}${VERSION}                                   ";
 echo -e "${CYAN}                        ${YELLOW}                                        ";
 
+echo -e "${NO_COLOR}Check basic commands of PostgreSQL..."
+PSQL="$(which psql)"
+if [ ${#PSQL} -eq 0 ]
+then
+	echo 'First installation psql(PostgreSQL and commands)'
+	return
+else
+	echo "psql is exist. $PSQL"
+fi
+
+echo -e "${NO_COLOR}Create DB backup directory..."
+mkdir -p dbbackups/local
+mkdir -p dbbackups/develop
+mkdir -p dbbackups/test
+mkdir -p dbbackups/live
 
 echo -e "${NO_COLOR}Install kubectl..."
 curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
