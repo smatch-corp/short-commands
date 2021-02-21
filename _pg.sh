@@ -1,17 +1,21 @@
 RED='\033[0;31m'
 NO_COLOR='\033[0m'
+alias db="psql"
+alias dbdev="PGPASSWORD=$DEVELOP_DBPASS psql -h $DEVELOP_DBHOST -U $DEVELOP_DBUSERNAME"
+alias dbtest="PGPASSWORD=$TEST_DBPASS psql -h $TEST_DBHOST -U $TEST_DBUSERNAME"
+alias dblive="PGPASSWORD=$LIVE_DBPASS psql -h $LIVE_DBHOST -U $LIVE_DBUSERNAME"
 
 dump() {
 	[ -z $2 ] && TARGET=local || TARGET=$2
 	case $TARGET in
 		develop)
-			pg_dump -h $DEVELOP_DBHOST -U $DEVELOP_DBUSERNAME -c $1 >| $DB_BACKUP_DIR/$TARGET/$1.sql
+			PGPASSWORD=$DEVELOP_DBPASS pg_dump -h $DEVELOP_DBHOST -U $DEVELOP_DBUSERNAME -c $1 >| $DB_BACKUP_DIR/$TARGET/$1.sql
 		;;
 		test)
-			pg_dump -h $TEST_DBHOST -U $TEST_DBUSERNAME -c $1 >| $DB_BACKUP_DIR/$TARGET/$1.sql
+			PGPASSWORD=$TEST_DBPASS pg_dump -h $TEST_DBHOST -U $TEST_DBUSERNAME -c $1 >| $DB_BACKUP_DIR/$TARGET/$1.sql
 		;;
 		live)
-			pg_dump -h $LIVE_DBHOST -U $LIVE_DBUSERNAME -c $1 >| $DB_BACKUP_DIR/$TARGET/$1.sql
+			PGPASSWORD=$LIVE_DBPASS pg_dump -h $LIVE_DBHOST -U $LIVE_DBUSERNAME -c $1 >| $DB_BACKUP_DIR/$TARGET/$1.sql
 		;;
 		local)
 			pg_dump -c $1 >| $DB_BACKUP_DIR/$TARGET/$1.sql

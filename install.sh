@@ -1,5 +1,5 @@
 # bash -c "$(curl -fsSL https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh)"
-VERSION='0.2.0'
+VERSION='0.2.1'
 
 NO_COLOR='\033[0m'
 CYAN='\033[1;36m'
