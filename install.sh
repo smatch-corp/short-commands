@@ -43,5 +43,8 @@ export SHORT_COMMANDS_DIR=\"%s\"
 
 source $HOME/.bashrc
 
+echo -e "Git update index..."
+git update-index --assume-unchanged configs.sh
+
 echo -e "${YELLOW}Finish! Thank you for using Short commands 😉"
 echo -e "${CYAN}Powered by Yungik Joo(jooyungik@gmail.com)"
