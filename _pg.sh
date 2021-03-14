@@ -37,7 +37,7 @@ restore() {
 			psql -h $TEST_DBHOST -U $TEST_DBHOST $1 < $DB_BACKUP_DIR/$SOURCE/$1.sql
 		;;
 		live)
-			echo "${RED}Error!${NO_COLOR} Live restore is not supported."
+			echo -e "${RED}Error!${NO_COLOR} Live restore is not supported."
 			return
 			# psql -h $LIVE_DBHOST -U $LIVE_DBHOST $1 < $DB_BACKUP_DIR/$SOURCE/$1.sql
 		;;
