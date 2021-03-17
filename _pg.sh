@@ -31,10 +31,10 @@ restore() {
 	echo $SOURCE
 	case $TARGET in
 		develop)
-			psql -h $DEVELOP_DBHOST -U $DEVELOP_DBUSERNAME $1 < $DB_BACKUP_DIR/$SOURCE/$1.sql
+			dbdev $1 < $DB_BACKUP_DIR/$SOURCE/$1.sql
 		;;
 		test)
-			psql -h $TEST_DBHOST -U $TEST_DBHOST $1 < $DB_BACKUP_DIR/$SOURCE/$1.sql
+			dbtest $1 < $DB_BACKUP_DIR/$SOURCE/$1.sql
 		;;
 		live)
 			echo -e "${RED}Error!${NO_COLOR} Live restore is not supported."
