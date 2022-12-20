@@ -1,6 +1,7 @@
 RED='\033[0;31m'
 NO_COLOR='\033[0m'
-alias db="psql"
+# Deprecated in smatch office. See INFRA_COMMANDS_DIR
+# alias db="psql" 
 alias dbdev="PGPASSWORD=$DEVELOP_DBPASS psql -h $DEVELOP_DBHOST -U $DEVELOP_DBUSERNAME"
 alias dbtest="PGPASSWORD=$TEST_DBPASS psql -h $TEST_DBHOST -U $TEST_DBUSERNAME"
 alias dblive="PGPASSWORD=$LIVE_DBPASS psql -h $LIVE_DBHOST -U $LIVE_DBUSERNAME"
