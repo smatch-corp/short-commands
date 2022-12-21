@@ -28,20 +28,20 @@ mkdir -p dbbackups/develop
 mkdir -p dbbackups/test
 mkdir -p dbbackups/live
 
-echo -e "${NO_COLOR}Install kubectl..."
-curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+echo -e "${NO_COLOR}Skip kubectl..."
+# curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+# sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
 
-echo -e "${NO_COLOR}Append script to bashrc..."
+echo -e "${NO_COLOR}Append script to bash_profile..."
 printf "
 # Short commands for developer
 # 
 # Included: git aliases
 export SHORT_COMMANDS_DIR=\"%s\"
 [ -s \"$SHORT_COMMANDS_DIR/index.sh\" ] && \. \"$SHORT_COMMANDS_DIR/index.sh\" 
-" $(pwd) >> "$HOME/.bashrc"
+" $(pwd) >> "$HOME/.bash_profile"
 
-source $HOME/.bashrc
+source $HOME/.bash_profile
 
 echo -e "Git update index..."
 git update-index --assume-unchanged configs.sh
