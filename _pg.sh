@@ -41,6 +41,9 @@ restore() {
 		test)
 			# dbtest $1 < $DB_BACKUP_DIR/$SOURCE/$1/$SCHEMA.$EXTENSION
 			PGPASSWORD=$TEST_DBPASS pg_restore -h $TEST_DBHOST -U $TEST_DBUSERNAME -d $1 $DB_BACKUP_DIR/$SOURCE/$1/$SCHEMA.$EXTENSION
+
+			# Run plugins
+			PGPASSWORD=$TEST_DBPASS psql -h $TEST_DBHOST -U $TEST_DBUSERNAME -d $1 -f $SHORT_COMMANDS_DIR/pg_plugins/update_phone_number/index.sql
 		;;
 		live)
 			echo -e "${RED}Error!${NO_COLOR} Live restore is not supported."
@@ -49,6 +52,9 @@ restore() {
 		;;
 		local)
 			pg_restore -d $1 $DB_BACKUP_DIR/$SOURCE/$1/$SCHEMA.$EXTENSION
+
+			# Run plugins
+			psql -d $1 -f $SHORT_COMMANDS_DIR/pg_plugins/update_phone_number/index.sql
 		;;
 	esac
 }
