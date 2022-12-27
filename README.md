@@ -8,8 +8,9 @@
 4. Edit `configs.sh` And restart terminal
 
 ## PostgreSQL solutions
-  - `dump <DB NAME> <SCHEMA NAME> [DB Environment: local(default) | live | test ]`
-  - `restore <DB NAME> <SCHEMA NAME> [DB Environment: local(default) | test ] [Dumped Environment(Backed up)]`
+  - `dump <DB NAME> <SCHEMA NAME> [DB Environment: local(default) | live | test | stage ]`
+  - `restore <DB NAME> <SCHEMA NAME> [DB Environment: local(default) | test | stage ] [Dumped Environment(Backed up)]`
+  - `drop <DB NAME> <SCHEMA NAME> [DB Environment: local(default) | test | stage ]`
 
 ## Smatch plugins
 ### Update phone number

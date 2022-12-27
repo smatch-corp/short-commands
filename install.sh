@@ -26,6 +26,7 @@ echo -e "${NO_COLOR}Create DB backup directory..."
 mkdir -p dbbackups/local
 mkdir -p dbbackups/develop
 mkdir -p dbbackups/test
+mkdir -p dbbackups/stage
 mkdir -p dbbackups/live
 
 echo -e "${NO_COLOR}Skip kubectl..."
@@ -45,7 +46,7 @@ source $HOME/.bash_profile
 
 echo -e "Git update index..."
 git update-index --assume-unchanged configs.sh
-git update-index --assume-unchanged pg_plugins/update_phone_number/index.sql
+git update-index --assume-unchanged pg_plugins/update_for_stage/index.sql
 
 echo -e "${YELLOW}Finish! Thank you for using Short commands 😉"
 echo -e "${CYAN}Powered by Yungik Joo(jooyungik@gmail.com)"
