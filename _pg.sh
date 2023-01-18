@@ -104,7 +104,7 @@ ddr_stage_live() {
 	dump $1 $2 live
 	# 전처리
 	restore $1 $2 develop
+	# 전처리 완료된 걸로 dump해서 stage restore
 	dump $1 $2 develop
-	# 전처리 완료, stage 데이터 restore
 	restore $1 $2 stage develop
 }
