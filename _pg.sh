@@ -3,7 +3,7 @@ NO_COLOR='\033[0m'
 EXTENSION=tar
 # Deprecated in smatch office. See INFRA_COMMANDS_DIR
 # alias db="psql" 
-# alias dbdev="PGPASSWORD=$DEVELOP_DBPASS psql -h $DEVELOP_DBHOST -U $DEVELOP_DBUSERNAME"
+alias dbdev="PGPASSWORD=$DEVELOP_DBPASS psql -h $DEVELOP_DBHOST -U $DEVELOP_DBUSERNAME"
 alias dbtest="PGPASSWORD=$TEST_DBPASS psql -h $TEST_DBHOST -U $TEST_DBUSERNAME"
 alias dbstage="PGPASSWORD=$STAGE_DBPASS psql -h $STAGE_DBHOST -U $STAGE_DBUSERNAME"
 alias dblive="PGPASSWORD=$LIVE_DBPASS psql -h $LIVE_DBHOST -U $LIVE_DBUSERNAME"
@@ -13,9 +13,9 @@ dump() {
 	[ -z $2 ] && SCHEMA=public || SCHEMA=$2
 	mkdir -p $DB_BACKUP_DIR/$TARGET/$1
 	case $TARGET in
-		# develop)
-		# 	PGPASSWORD=$DEVELOP_DBPASS pg_dump -h $DEVELOP_DBHOST -U $DEVELOP_DBUSERNAME -n $SCHEMA -c $1 -F t >| $DB_BACKUP_DIR/$TARGET/$1/$SCHEMA.$EXTENSION
-		# ;;
+		develop)
+			PGPASSWORD=$DEVELOP_DBPASS pg_dump -h $DEVELOP_DBHOST -U $DEVELOP_DBUSERNAME -n $SCHEMA -c $1 -F t >| $DB_BACKUP_DIR/$TARGET/$1/$SCHEMA.$EXTENSION
+		;;
 		test)
 			PGPASSWORD=$TEST_DBPASS pg_dump -h $TEST_DBHOST -U $TEST_DBUSERNAME -n $SCHEMA -c $1 -F t >| $DB_BACKUP_DIR/$TARGET/$1/$SCHEMA.$EXTENSION
 		;;
@@ -38,10 +38,15 @@ restore() {
 	echo $TARGET
 	echo Source is..
 	echo $SOURCE
+
+	drop $1 $2 $3
 	case $TARGET in
-		# develop)
-		# 	dbdev $1 < $DB_BACKUP_DIR/$SOURCE/$1/$SCHEMA.$EXTENSION
-		# ;;
+		develop)
+			PGPASSWORD=$DEVELOP_DBPASS pg_restore -h $DEVELOP_DBHOST -U $DEVELOP_DBUSERNAME -d $1 $DB_BACKUP_DIR/$SOURCE/$1/$SCHEMA.$EXTENSION
+
+			# Run plugins
+			dbdev -d $1 -f $SHORT_COMMANDS_DIR/pg_plugins/update_for_stage/index.sql
+		;;
 		test)
 			# dbtest $1 < $DB_BACKUP_DIR/$SOURCE/$1/$SCHEMA.$EXTENSION
 			PGPASSWORD=$TEST_DBPASS pg_restore -h $TEST_DBHOST -U $TEST_DBUSERNAME -d $1 $DB_BACKUP_DIR/$SOURCE/$1/$SCHEMA.$EXTENSION
@@ -74,8 +79,9 @@ drop() {
 	[ -z $3 ] && TARGET=local || TARGET=$3
 	echo "$SCHEMA 의 모든 테이블 드랍(DB명: $1)"
 	case $TARGET in
-		# develop)
-		# ;;
+		develop)
+			dbdev $1 -v schemaname=$SCHEMA < $SHORT_COMMANDS_DIR/pg_plugins/drop_all_tables/make_drop_query.sql | grep drop | dbdev $1;
+		;;
 		test)
 			# dbtest $1 < $DB_BACKUP_DIR/$SOURCE/$1/$SCHEMA.$EXTENSION
 			dbtest $1 -v schemaname=$SCHEMA < $SHORT_COMMANDS_DIR/pg_plugins/drop_all_tables/make_drop_query.sql | grep drop | dbtest $1;
@@ -91,4 +97,14 @@ drop() {
 			psql $1 -v schemaname=$SCHEMA < $SHORT_COMMANDS_DIR/pg_plugins/drop_all_tables/make_drop_query.sql | grep drop | psql $1;
 		;;
 	esac
+}
+
+# dump > drop > restore
+ddr_stage_live() {
+	dump $1 $2 live
+	# 전처리
+	restore $1 $2 develop
+	dump $1 $2 develop
+	# 전처리 완료, stage 데이터 restore
+	restore $1 $2 stage develop
 }
