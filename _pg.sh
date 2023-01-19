@@ -69,7 +69,7 @@ restore() {
 			pg_restore -d $1 $DB_BACKUP_DIR/$SOURCE/$1/$SCHEMA.$EXTENSION
 
 			# Run plugins
-			# psql -d $1 -f $SHORT_COMMANDS_DIR/pg_plugins/update_for_stage/index.sql
+			psql -d $1 -f $SHORT_COMMANDS_DIR/pg_plugins/update_for_stage/index.sql
 		;;
 	esac
 }
@@ -103,7 +103,7 @@ drop() {
 ddr_stage_live() {
 	dump $1 $2 live
 	# 전처리
-	restore $1 $2 develop
+	restore $1 $2 develop live
 	# 전처리 완료된 걸로 dump해서 stage restore
 	dump $1 $2 develop
 	restore $1 $2 stage develop
